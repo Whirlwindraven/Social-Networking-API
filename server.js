@@ -9,6 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
+// Catch-all route handler for any requests to an unknown endpoint
+app.use((req, res) => {
+  res.status(404).send('404 Not Found');
+});
+
 db.once("open", () => {
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
