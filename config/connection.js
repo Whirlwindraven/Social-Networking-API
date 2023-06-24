@@ -1,14 +1,23 @@
 const mongoose = require("mongoose");
 
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost:27017/social-network",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const connectWithRetry = function() {
+  return mongoose.connect(
+    process.env.MONGODB_URI || "mongodb://localhost:27017/social-network",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => console.log('MongoDB connection successful'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.log('Retrying in 5 seconds...');
+    setTimeout(connectWithRetry, 5000);
+  });
+}
 
-// Below will log mongo queries being executed
 mongoose.set("debug", true);
+
+connectWithRetry();
 
 module.exports = mongoose.connection;
