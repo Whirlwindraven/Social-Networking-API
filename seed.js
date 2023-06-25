@@ -1,62 +1,52 @@
 const mongoose = require('mongoose');
-const db = require('./config/connection');
-
 const User = require('./models/User');
-const Post = require('./models/Post');
+const Thought = require('./models/Thought');
 
-// Connect to the database
-db;
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/social-network-api",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
-// Define your seed data
+// Defining a list of users
 const users = [
   {
-    name: 'John Doe',
-    email: 'john@example.com'
+    username: 'seedUser1',
+    email: 'seeduser1@example.com',
+    // add other fields as per your User schema
   },
   {
-    name: 'Jane Smith',
-    email: 'jane@example.com'
-  }
+    username: 'seedUser2',
+    email: 'seeduser2@example.com',
+    // add other fields as per your User schema
+  },
+  // add more users if needed
 ];
 
-const posts = [
+// Defining a list of thoughts
+const thoughts = [
   {
-    title: 'First Post',
-    content: 'This is the first post.',
-    author: null // We'll set this later
+    thoughtText: "This is a seed thought from seedUser1",
+    username: 'seedUser1',
+    // add other fields as per your Thought schema
   },
   {
-    title: 'Second Post',
-    content: 'This is the second post.',
-    author: null // We'll set this later
-  }
+    thoughtText: "This is a seed thought from seedUser2",
+    username: 'seedUser2',
+    // add other fields as per your Thought schema
+  },
+  // add more thoughts if needed
 ];
 
-// This function will run your seed script
-async function seedDB() {
-  try {
-    // First clear the database
-    await User.deleteMany({});
-    await Post.deleteMany({});
+// Function to seed the users and thoughts
+const insertData = async () => {
+  await User.insertMany(users);
+  await Thought.insertMany(thoughts);
 
-    // Save the users
-    const createdUsers = await User.insertMany(users);
+  console.log("Data Inserted Successfully");
+  process.exit(0);
+};
 
-    // Associate the first post with the first user and the second post with the second user
-    posts[0].author = createdUsers[0]._id;
-    posts[1].author = createdUsers[1]._id;
-
-    // Save the posts
-    await Post.insertMany(posts);
-
-    console.log('Database seeded!');
-  } catch (err) {
-    console.error(err);
-  } finally {
-    // Close the connection to the db
-    mongoose.connection.close();
-  }
-}
-
-// Call the seedDB function
-seedDB();
+insertData();
