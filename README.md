@@ -4,6 +4,7 @@
 ## Table of Contents
 - [Project Description](#Description)
 - [Usage](#Usage)
+- [Video-demo](#Video-demo)
 - [Installation](#Installation)
 - [Contributing](#Contributing)
 - [Questions](#Questions)
@@ -12,7 +13,8 @@
 ## Description
 This is a simulated API for a social network platform that enables users to post their ideas, respond to their friends' posts, and manage a list of friends. The technology stack includes Express.js for handling routing, MongoDB as the database, and Mongoose as the Object Data Modeling (ODM) tool.
 
-[Video Demonstration Here]
+## Video-demo
+[https://youtu.be/J8U7bxDweiA]
 
 ## Usage
 This was completed as a part of an educational challenge and can be used for practice.
